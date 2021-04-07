@@ -10,14 +10,31 @@ public class Main {
     public static void main(String[] args) {
         ArrayList<GraphNode> graph = new ArrayList<>();
         initGraph(graph);
+
         //Breadth-first Search \/
         final int from = 0;
-        ArrayList<GraphNode> reachableNodes = BST(graph,graph.get(from));
-        reachableNodes.forEach(
+        ArrayList<GraphNode> reachableNodesOfBST = BST(graph,graph.get(from));
+        reachableNodesOfBST.forEach(
                 graphNode ->
                         System.out.println(
-                                "From node " + from + " node " + graphNode.getId() + " is reachable")
+                                "(BST) From node " + from + " to node " + graphNode.getId() + " is reachable")
         );
+        if(reachableNodesOfBST.size() == graph.size())
+        {
+            System.out.println("(BST) Every node is reachable");
+        }
+        /*
+        //Depth-first Serch \/
+        ArrayList<GraphNode> reachableNodesOfDFS = DFS(graph, graph.get(from));
+        reachableNodesOfBST.forEach(
+                graphNode ->
+                        System.out.println(
+                                "(DFS) From node " + from + " to node " + graphNode.getId() + " is reachable")
+        );*/
+    }
+    private static ArrayList<GraphNode> DFS(ArrayList<GraphNode> graph, GraphNode startingFrom)
+    {
+        return null;
     }
 
     private static ArrayList<GraphNode> BST(ArrayList<GraphNode> graph, GraphNode startingFrom) {
@@ -30,6 +47,7 @@ public class Main {
         //Start with Node 0 and mark it as discovered
         queue.add(startingFrom);
         marked.get(startingFrom.getId()).setMarked(true);
+        System.out.println("(BST) Starting point: " + startingFrom.getId());
         //Discover as long queue not empty
         while (!queue.isEmpty()){
             GraphNode dequedNode = queue.remove();
@@ -37,6 +55,7 @@ public class Main {
                 if(!marked.get(neighbour.getId()).isMarked()){
                     queue.add(neighbour);
                     marked.get(neighbour.getId()).setMarked(true);
+                    System.out.println("(BST) Found: " + neighbour.getId());
                 }
             }
         }
