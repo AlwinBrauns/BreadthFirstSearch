@@ -4,7 +4,6 @@ package com.company;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Stack;
 
 public class Main {
 
@@ -27,7 +26,7 @@ public class Main {
 
         //Depth-first Search \/
         ArrayList<GraphNode> reachableNodesOfDFS = DFS(graph, graph.get(from));
-        reachableNodesOfBST.forEach(
+        reachableNodesOfDFS.forEach(
                 graphNode ->
                         System.out.println(
                                 "(DFS) From node " + from + " to node " + graphNode.getId() + " is reachable")
@@ -55,8 +54,8 @@ public class Main {
 
     private static void initMarkedGraphNodes(ArrayList<GraphNode> graph, ArrayList<Mark<GraphNode>> marked) {
         //Mark every graphNode as not discovered yet (false)
-        for (int i = 0; i < graph.size(); i++) {
-            marked.add(new Mark<>(graph.get(i), false));
+        for (GraphNode graphNode : graph) {
+            marked.add(new Mark<>(graphNode, false));
         }
     }
 
