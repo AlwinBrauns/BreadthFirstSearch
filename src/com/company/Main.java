@@ -4,6 +4,7 @@ package com.company;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 public class Main {
 
@@ -23,27 +24,47 @@ public class Main {
         {
             System.out.println("(BST) Every node is reachable");
         }
-        /*
-        //Depth-first Serch \/
+
+        //Depth-first Search \/
         ArrayList<GraphNode> reachableNodesOfDFS = DFS(graph, graph.get(from));
         reachableNodesOfBST.forEach(
                 graphNode ->
                         System.out.println(
                                 "(DFS) From node " + from + " to node " + graphNode.getId() + " is reachable")
-        );*/
+        );
     }
     private static ArrayList<GraphNode> DFS(ArrayList<GraphNode> graph, GraphNode startingFrom)
     {
-        return null;
+        ArrayList<Mark<GraphNode>> marked = new ArrayList<>();
+        ArrayList<GraphNode> markedGraphNodes = new ArrayList<>();
+        initMarkedGraphNodes(graph, marked);
+        DFS_RECURSIVE(startingFrom, marked);
+        getMarkedElements(marked,markedGraphNodes);
+        return markedGraphNodes;
+    }
+
+    private static void DFS_RECURSIVE(GraphNode current, ArrayList<Mark<GraphNode>> marked) {
+        marked.get(current.getId()).setMarked(true);
+        System.out.println("(DFS) Found: " + current.getId());
+        for (GraphNode neighbour:current.getConnected()) {
+            if(!marked.get(neighbour.getId()).isMarked()){
+                DFS_RECURSIVE(neighbour,marked);
+            }
+        }
+    }
+
+    private static void initMarkedGraphNodes(ArrayList<GraphNode> graph, ArrayList<Mark<GraphNode>> marked) {
+        //Mark every graphNode as not discovered yet (false)
+        for (int i = 0; i < graph.size(); i++) {
+            marked.add(new Mark<>(graph.get(i), false));
+        }
     }
 
     private static ArrayList<GraphNode> BST(ArrayList<GraphNode> graph, GraphNode startingFrom) {
         Queue<GraphNode> queue = new LinkedList<>();
         ArrayList<Mark<GraphNode>> marked = new ArrayList<>();
-        //Mark every graphNode as not discovered yet (false)
-        for(int i = 0; i < graph.size(); i++){
-            marked.add(new Mark<>(graph.get(i),false));
-        }
+        ArrayList<GraphNode> markedGraphNodes = new ArrayList<>();
+        initMarkedGraphNodes(graph, marked);
         //Start with Node 0 and mark it as discovered
         queue.add(startingFrom);
         marked.get(startingFrom.getId()).setMarked(true);
@@ -59,11 +80,14 @@ public class Main {
                 }
             }
         }
-        ArrayList<GraphNode> markedGraphNodes = new ArrayList<>();
-        for (Mark<GraphNode> markedGraphNode:marked) {
+        getMarkedElements(marked, markedGraphNodes);
+        return markedGraphNodes;
+    }
+
+    private static void getMarkedElements(ArrayList<Mark<GraphNode>> marked, ArrayList<GraphNode> markedGraphNodes) {
+        for (Mark<GraphNode> markedGraphNode: marked) {
             markedGraphNodes.add(markedGraphNode.getElement());
         }
-        return markedGraphNodes;
     }
 
 

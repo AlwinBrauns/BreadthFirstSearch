@@ -21,4 +21,5 @@ public class Mark<T> {
     public boolean isMarked() {
         return isMarked;
     }
+
 }
